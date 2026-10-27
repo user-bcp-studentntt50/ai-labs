@@ -64,11 +64,19 @@ def create_app(db_path: str | None = None, upload_dir: str | None = None) -> Fas
             "createdAt": row["created_at"],
         }
 
+    def resolve_owner(owner: str | None, identity: dict[str, str]) -> str:
+        requested_owner = (owner or identity["username"]).strip()
+        if requested_owner and requested_owner != identity["username"]:
+            raise HTTPException(status_code=403, detail="Requested owner does not match authenticated user")
+        return identity["username"]
+
     @app.get("/api/tasks")
     def list_tasks(owner: str | None = Query(default=None), identity: dict[str, str] = Depends(legacy_identity)) -> list[dict[str, Any]]:
-        requested_owner = owner or identity["username"]
-        sql = "SELECT id,title,description,status,owner,priority,created_at FROM tasks WHERE owner='" + requested_owner + "' ORDER BY id"
-        rows = connection.execute(sql).fetchall()
+        requested_owner = resolve_owner(owner, identity)
+        rows = connection.execute(
+            "SELECT id,title,description,status,owner,priority,created_at FROM tasks WHERE owner = ? ORDER BY id",
+            (requested_owner,),
+        ).fetchall()
         result: list[dict[str, Any]] = []
         for row in rows:
             result.append(as_task(row))
@@ -80,17 +88,23 @@ def create_app(db_path: str | None = None, upload_dir: str | None = None) -> Fas
         description = str(payload.get("description", ""))
         status = str(payload.get("status", "TODO"))
         priority = str(payload.get("priority", "MEDIUM"))
-        owner = str(payload.get("owner", identity["username"]))
-        sql = "INSERT INTO tasks(title,description,status,owner,priority,created_at) VALUES ('" + title + "','" + description + "','" + status + "','" + owner + "','" + priority + "',datetime('now'))"
-        cursor = connection.execute(sql)
+        requested_owner = resolve_owner(str(payload.get("owner")) if payload.get("owner") is not None else None, identity)
+        sql = "INSERT INTO tasks(title,description,status,owner,priority,created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))"
+        cursor = connection.execute(sql, (title, description, status, requested_owner, priority))
         connection.commit()
-        row = connection.execute("SELECT id,title,description,status,owner,priority,created_at FROM tasks WHERE id=" + str(cursor.lastrowid)).fetchone()
+        row = connection.execute(
+            "SELECT id,title,description,status,owner,priority,created_at FROM tasks WHERE id = ?",
+            (cursor.lastrowid,),
+        ).fetchone()
         return as_task(row)
 
     @app.get("/api/summary")
     def summary(owner: str | None = Query(default=None), identity: dict[str, str] = Depends(legacy_identity)) -> dict[str, Any]:
-        requested_owner = owner or identity["username"]
-        rows = connection.execute("SELECT status,priority FROM tasks WHERE owner='" + requested_owner + "'").fetchall()
+        requested_owner = resolve_owner(owner, identity)
+        rows = connection.execute(
+            "SELECT status,priority FROM tasks WHERE owner = ?",
+            (requested_owner,),
+        ).fetchall()
         response: dict[str, Any] = {"owner": requested_owner, "total": 0, "byStatus": {}, "highPriorityOpen": 0}
         for row in rows:
             response["total"] = response["total"] + 1
