@@ -56,3 +56,32 @@ def test_rejects_invalid_token(tmp_path: Path) -> None:
     with TestClient(app) as client:
         response = client.get("/api/tasks", headers={"Authorization": "Bearer invalid"})
     assert response.status_code == 401
+
+
+def test_rejects_cross_user_owner_and_uses_identity_for_listing(tmp_path: Path) -> None:
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get("/api/tasks?owner=trainer", headers=headers("student"))
+        owned = client.get("/api/tasks?owner=student", headers=headers("student"))
+
+    assert response.status_code == 403
+    assert owned.status_code == 200
+    assert [task["owner"] for task in owned.json()] == ["student", "student"]
+
+
+def test_treats_task_payload_as_literal_data_not_sql(tmp_path: Path) -> None:
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    payload = {
+        "title": "x' OR 1=1 --",
+        "description": "desc', 'inject', 'ignored",
+        "status": "TODO",
+        "priority": "HIGH",
+        "owner": "trainer",
+    }
+    with TestClient(app) as client:
+        created = client.post("/api/tasks", headers=headers("student"), json=payload)
+        summary = client.get("/api/summary", headers=headers("student"))
+
+    assert created.status_code == 403
+    assert summary.json()["total"] == 2
+
