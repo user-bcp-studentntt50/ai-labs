@@ -49,3 +49,29 @@ código, no una aprobación de contrato.
 
 Durante el Discovery no se ejecutaron pruebas ni análisis SCA. Las validaciones
 posteriores y su evidencia se registran en `PLAN.md`.
+
+### Candidatos Discovery para revisión humana
+
+#### H-API-08 — Política CORS permite cualquier origen con credenciales habilitadas
+- Estado: CANDIDATO
+- Evidencia: `api/app/main.py:50-54` configura `allow_origins=["*"]`, `allow_credentials=True` y comodines para métodos y headers.
+- Impacto: la API no limita los orígenes permitidos; además, las solicitudes de navegador con modo de credenciales pueden no interoperar con el origen comodín. El efecto depende de los orígenes y del modo de autenticación usados por los clientes.
+- Prioridad propuesta: Media, pendiente de confirmar los clientes y el uso de credenciales cross-origin.
+- Contrato potencialmente afectado: política CORS de los endpoints `/api/*`, especialmente preflight y solicitudes que envían `Authorization`.
+- Cómo validarlo: ejecutar preflight desde el origen real del frontend y probar en navegador la solicitud con el modo de credenciales que use el cliente; comparar los headers de respuesta con los orígenes permitidos acordados.
+
+#### H-API-09 — `status` y `priority` aceptan valores sin dominio validado
+- Estado: CANDIDATO
+- Evidencia: `api/app/schemas.py:14-21` declara ambos campos como `str` sin restricciones de valores; `api/app/services.py:65-74` agrega los estados recibidos y cuenta prioridad alta solo cuando el valor es exactamente `HIGH`. Las pruebas ejercitan valores conocidos en `api/tests/test_api.py:92-100`, pero no documentan el conjunto permitido.
+- Impacto: valores arbitrarios o con distinta capitalización pueden persistirse y aparecer como categorías distintas en `byStatus`, mientras `highPriorityOpen` podría no contarlos como prioridad alta. El impacto depende de que exista un dominio de valores esperado.
+- Prioridad propuesta: Media, pendiente de confirmar el dominio de estados y prioridades con el responsable del contrato.
+- Contrato potencialmente afectado: cuerpo de `POST /api/tasks` (`status`, `priority`) y respuesta de `GET /api/summary` (`byStatus`, `highPriorityOpen`).
+- Cómo validarlo: enviar valores no reconocidos y con distinta capitalización a `POST /api/tasks`; comprobar respuesta, persistencia y efecto en el resumen, y contrastar el resultado con el dominio aprobado.
+
+#### H-API-10 — El endpoint de health-check retransmite el cuerpo del servicio de autenticación
+- Estado: CANDIDATO
+- Evidencia: `api/app/services.py:98-114` decodifica `response.data` y devuelve el contenido sin filtrado en `body`; `api/app/routes.py:78-85` expone el servicio en `GET /api/backend-health`. La prueba `api/tests/test_api.py:199-223` confirma que se devuelve el cuerpo recibido.
+- Impacto: cualquier dato incluido por el servicio de autenticación en su respuesta queda disponible a través de este endpoint para quienes puedan invocarlo. No se ha confirmado que el cuerpo real contenga información sensible.
+- Prioridad propuesta: Media, sujeta al contenido real del health-check y al alcance de acceso del endpoint.
+- Contrato potencialmente afectado: respuesta de `GET /api/backend-health`, campo `body`.
+- Cómo validarlo: usar una respuesta sintética del upstream con un marcador no sensible y comprobar que se retransmite; revisar el esquema real permitido del health-check y decidir si requiere lista permitida o redacción.
