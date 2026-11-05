@@ -36,4 +36,4 @@ Archivo: `auth/src/main/java/com/bcp/workshop/auth/LegacyDatabase.java`. Solo se
 ## 5. Cierre
 
 - [x] 5.1 Separar commits: pruebas (secciones 1 y 2) y cambio funcional (sección 3), para permitir `git revert` del segundo sin afectar las pruebas.
-- [ ] 5.2 Preparar la descripción del PR con referencia al Issue #23 y H-AUTH-01, la evidencia de pruebas antes y después y la cobertura obtenida, indicando los riesgos residuales no abordados (contraseñas en texto plano, token sin firma, mensaje 401 que refleja `username`).
+- [x] 5.2 Preparar la descripción del PR con referencia al Issue #23 y H-AUTH-01, la evidencia de pruebas antes y después y la cobertura obtenida, indicando los riesgos residuales no abordados (contraseñas en texto plano, token sin firma, mensaje 401 que refleja `username`).
