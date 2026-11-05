@@ -22,18 +22,18 @@ Archivo: `auth/src/test/java/com/bcp/workshop/auth/AuthResourceTest.java`. No se
 
 Archivo: `auth/src/main/java/com/bcp/workshop/auth/LegacyDatabase.java`. Solo se modifica `findByCredentials`.
 
-- [ ] 3.1 Reemplazar la concatenación de `username` y `password` por una consulta parametrizada (`PreparedStatement` con `WHERE username = ? AND password = ?`) enlazando ambos valores con `setString`.
-- [ ] 3.2 Conservar `DB_URL`, las columnas seleccionadas, el mapeo a `UserRecord`, el retorno `null` sin coincidencia y el manejo actual de excepciones.
-- [ ] 3.3 Confirmar que no cambian `AuthResource`, `LegacyTokenUtil`, `LoginRequest`, `UserRecord`, `application.properties`, `pom.xml` ni ningún archivo fuera de `auth/`.
+- [x] 3.1 Reemplazar la concatenación de `username` y `password` por una consulta parametrizada (`PreparedStatement` con `WHERE username = ? AND password = ?`) enlazando ambos valores con `setString`.
+- [x] 3.2 Conservar `DB_URL`, las columnas seleccionadas, el mapeo a `UserRecord`, el retorno `null` sin coincidencia y el manejo actual de excepciones.
+- [x] 3.3 Confirmar que no cambian `AuthResource`, `LegacyTokenUtil`, `LoginRequest`, `UserRecord`, `application.properties`, `pom.xml` ni ningún archivo fuera de `auth/`.
 
 ## 4. Validación
 
-- [ ] 4.1 Ejecutar `python tools/lab.py test auth` y confirmar que pasan todas las pruebas de las secciones 1 y 2.
-- [ ] 4.2 Revisar el reporte JaCoCo de `auth/` y confirmar cobertura de 85% o más sobre `findByCredentials`; si el bloque `catch` queda sin cubrir, evaluar una prueba directa en `LegacyDatabaseTest` antes de aceptar el hueco.
-- [ ] 4.3 Contrastar cada escenario de `specs/auth-login/spec.md` con su prueba y confirmar que los tres están cubiertos.
-- [ ] 4.4 Verificar con `git diff` desde la raíz que el cambio se limita a `auth/` y a los artefactos de `openspec/changes/address-h-auth-01/`.
+- [x] 4.1 Ejecutar `python tools/lab.py test auth` y confirmar que pasan todas las pruebas de las secciones 1 y 2.
+- [x] 4.2 Revisar el reporte JaCoCo de `auth/` y confirmar cobertura de 85% o más sobre `findByCredentials`; si el bloque `catch` queda sin cubrir, evaluar una prueba directa en `LegacyDatabaseTest` antes de aceptar el hueco.
+- [x] 4.3 Contrastar cada escenario de `specs/auth-login/spec.md` con su prueba y confirmar que los tres están cubiertos.
+- [x] 4.4 Verificar con `git diff` desde la raíz que el cambio se limita a `auth/` y a los artefactos de `openspec/changes/address-h-auth-01/`.
 
 ## 5. Cierre
 
-- [ ] 5.1 Separar commits: pruebas (secciones 1 y 2) y cambio funcional (sección 3), para permitir `git revert` del segundo sin afectar las pruebas.
+- [x] 5.1 Separar commits: pruebas (secciones 1 y 2) y cambio funcional (sección 3), para permitir `git revert` del segundo sin afectar las pruebas.
 - [ ] 5.2 Preparar la descripción del PR con referencia al Issue #23 y H-AUTH-01, la evidencia de pruebas antes y después y la cobertura obtenida, indicando los riesgos residuales no abordados (contraseñas en texto plano, token sin firma, mensaje 401 que refleja `username`).
