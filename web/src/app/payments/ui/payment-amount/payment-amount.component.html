@@ -1,0 +1,22 @@
+<app-payment-shell [title]="title">
+  <dl class="amount-parties">
+    <dt>{{ originLabel }}</dt>
+    <dd>{{ originId }}</dd>
+    <dt>{{ destinationLabel }}</dt>
+    <dd>{{ destinationName }}</dd>
+  </dl>
+
+  <label for="amount-input">{{ inputLabel }}</label>
+  <input
+    id="amount-input"
+    type="text"
+    inputmode="decimal"
+    name="amount"
+    [(ngModel)]="amountText"
+    [attr.aria-invalid]="errorMessage ? true : null"
+    [attr.aria-describedby]="errorMessage ? 'amount-error' : null"
+  />
+  <p *ngIf="errorMessage" id="amount-error" role="alert">{{ errorMessage }}</p>
+
+  <button type="button" class="primary" (click)="continueToConfirmation()">{{ continueLabel }}</button>
+</app-payment-shell>

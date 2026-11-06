@@ -1,0 +1,21 @@
+<app-payment-shell [title]="title">
+  <label for="contact-search">{{ searchLabel }}</label>
+  <input
+    id="contact-search"
+    type="search"
+    name="contact-search"
+    [(ngModel)]="query"
+    [placeholder]="searchPlaceholder"
+  />
+
+  <ul class="contact-list">
+    <li *ngFor="let contact of visibleContacts">
+      <button type="button" (click)="selectContact(contact)">
+        <span class="contact-name">{{ contact.displayName }}</span>
+        <span class="contact-alias">{{ maskedAlias(contact) }}</span>
+      </button>
+    </li>
+  </ul>
+
+  <p *ngIf="!visibleContacts.length" role="status">{{ emptyResultsMessage }}</p>
+</app-payment-shell>

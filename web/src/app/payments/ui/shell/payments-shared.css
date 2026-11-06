@@ -1,0 +1,69 @@
+/* Tokens e utilidades compartidas por las pantallas del flujo de pagos (T11).
+   18px como tamaño base de texto y 48px como objetivo táctil mínimo. */
+
+.payment-shell {
+  --payment-font-base: 1.125rem; /* 18px */
+  --payment-tap-target: 3rem; /* 48px */
+  --payment-color-text: #0b1b33;
+  --payment-color-primary: #0a4ea6; /* azul con contraste AA sobre blanco */
+  --payment-color-primary-contrast: #ffffff;
+  --payment-color-success: #1b7a3d; /* verde oscurecido para cumplir AA sobre blanco */
+  --payment-color-danger: #a31515;
+  --payment-color-surface: #ffffff;
+  --payment-color-border: #c7d0dc;
+
+  font-size: var(--payment-font-base);
+  color: var(--payment-color-text);
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+}
+
+.payment-shell h1 {
+  font-size: 1.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.payment-shell button {
+  font-size: 1rem;
+  min-height: var(--payment-tap-target);
+  min-width: var(--payment-tap-target);
+  border-radius: 0.75rem;
+  border: 1px solid var(--payment-color-border);
+  background: var(--payment-color-surface);
+  cursor: pointer;
+}
+
+.payment-shell button.primary {
+  background: var(--payment-color-primary);
+  color: var(--payment-color-primary-contrast);
+  border-color: transparent;
+}
+
+.payment-shell button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.payment-shell label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.payment-shell input[type='text'],
+.payment-shell input[type='search'] {
+  font-size: 1rem;
+  min-height: var(--payment-tap-target);
+  width: 100%;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--payment-color-border);
+  box-sizing: border-box;
+}
+
+.payment-help {
+  margin-top: 2rem;
+  border-top: 1px solid var(--payment-color-border);
+  padding-top: 1rem;
+}

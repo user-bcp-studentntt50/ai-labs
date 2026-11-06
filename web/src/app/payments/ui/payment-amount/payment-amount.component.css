@@ -1,0 +1,14 @@
+@import '../shell/payments-shared.css';
+
+.amount-parties {
+  margin: 0 0 1.5rem;
+}
+
+.amount-parties dt {
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+.amount-parties dd {
+  margin: 0;
+}

@@ -1,0 +1,10 @@
+@import '../shell/payments-shared.css';
+
+.summary {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+button + button {
+  margin-top: 0.75rem;
+}

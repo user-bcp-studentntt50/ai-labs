@@ -9,6 +9,10 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard.component').then((module) => module.DashboardComponent)
   },
+  {
+    path: 'pagos',
+    loadChildren: () => import('./payments/payments.routes').then((module) => module.paymentsRoutes)
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

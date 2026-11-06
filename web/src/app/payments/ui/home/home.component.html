@@ -1,0 +1,18 @@
+<app-payment-shell [title]="greeting">
+  <section aria-live="polite" class="balance-card">
+    <p class="balance-label">{{ balanceLabel }}</p>
+
+    <p *ngIf="loading">…</p>
+
+    <ng-container *ngIf="!loading && error">
+      <p role="alert">{{ errorMessage }}</p>
+      <button type="button" (click)="loadBalance()">{{ retryLabel }}</button>
+    </ng-container>
+
+    <p *ngIf="!loading && !error" class="balance-amount">{{ balanceDisplay }}</p>
+  </section>
+
+  <button type="button" class="primary" (click)="startNewPayment()">
+    <span aria-hidden="true">💸</span> {{ newPaymentLabel }}
+  </button>
+</app-payment-shell>

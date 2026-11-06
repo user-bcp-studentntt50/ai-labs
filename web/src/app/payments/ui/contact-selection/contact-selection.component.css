@@ -1,0 +1,29 @@
+@import '../shell/payments-shared.css';
+
+.contact-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.contact-list li + li {
+  margin-top: 0.75rem;
+}
+
+.contact-list button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+
+.contact-name {
+  font-weight: 600;
+}
+
+.contact-alias {
+  color: #44556b;
+}
