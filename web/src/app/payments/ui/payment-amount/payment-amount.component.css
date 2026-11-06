@@ -1,0 +1,72 @@
+@import '../shell/payments-shared.css';
+
+.party-card {
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 1rem;
+}
+
+.party-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+}
+
+.party-row + .party-row {
+  border-top: 1px solid var(--payment-color-border);
+}
+
+.party-term {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.party-icon {
+  color: var(--payment-color-primary);
+  flex-shrink: 0;
+}
+
+.party-value {
+  margin: 0;
+  color: var(--payment-color-muted);
+  text-align: right;
+}
+
+.amount-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+
+.amount-field-invalid {
+  border-color: var(--payment-color-danger);
+}
+
+.amount-prefix {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--payment-color-muted);
+}
+
+.amount-field input[type='text'] {
+  border: none;
+  min-height: var(--payment-tap-target);
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding: 0;
+  border-radius: 0;
+}
+
+.amount-field input[type='text']:focus {
+  outline: none;
+}
+
+.amount-error {
+  color: var(--payment-color-danger);
+  font-weight: 600;
+}

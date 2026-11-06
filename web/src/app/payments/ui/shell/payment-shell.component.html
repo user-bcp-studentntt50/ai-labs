@@ -1,0 +1,14 @@
+<div class="payment-shell">
+  <h1 #heading tabindex="-1">{{ title }}</h1>
+
+  <div class="payment-shell-content">
+    <ng-content></ng-content>
+  </div>
+
+  <footer class="payment-help">
+    <button type="button" (click)="toggleHelp()" [attr.aria-expanded]="showHelp">
+      <span aria-hidden="true">❓</span> {{ helpLabel }}
+    </button>
+    <p *ngIf="showHelp" role="status">{{ helpMessage }}</p>
+  </footer>
+</div>

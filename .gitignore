@@ -9,6 +9,7 @@
 **/htmlcov/
 **/.coverage
 **/data/
+!web/src/app/payments/data/
 **/*.db
 **/*.db-shm
 **/*.db-wal

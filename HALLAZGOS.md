@@ -17,6 +17,20 @@ cambios.
 | H-API-06 | api | Responsabilidades de API, persistencia, autenticación y serialización concentradas en un módulo | Refactor | `main.py` concentraba autenticación, inicialización SQLite, serialización y rutas; el acoplamiento dificultaba probar y mantener cada responsabilidad. | `api/app/main.py:24-62; api/app/database.py:7-18; api/app/routes.py:1-86; api/app/services.py:27-125; api/app/repositories.py:38-97` | media | Resuelto — configuración, rutas, servicios, seguridad, persistencia y esquemas quedaron separados por capa. |
 | H-API-07 | api | Tipado genérico, manejo amplio de excepciones y lógica anidada | Refactor | Requests y respuestas usaban `dict[str, Any]`, había conversiones permisivas y capturas amplias, y el resumen tenía condiciones anidadas; estas prácticas ocultaban errores y dificultaban el mantenimiento. | `api/app/schemas.py:1-59; api/app/security.py:12-22; api/app/services.py:56-115; api/app/main.py:59-63` | baja | Resuelto — se añadieron modelos Pydantic, errores genéricos, excepciones acotadas, constantes y resumen sin anidamiento profundo. |
 
+## Auth
+
+Hallazgos de `auth/` confirmados por una persona tras el Discovery. `CONFIRMADO`
+habilita spec y backlog; no implica que se hayan ejecutado pruebas ni aprobado
+una solución. Las referencias de línea son de la revisión de código del Discovery.
+
+| id | componente | hallazgo | tipo | explicacion | evidencia (archivo:linea) | severidad | estado |
+|---|---|---|---|---|---|---|---|
+| H-AUTH-01 | auth | SQL de login armado por concatenación | Vulnerabilidad | `findByCredentials` concatena `username` y `password` en el SQL; una entrada manipulada puede alterar la consulta y autenticar sin la contraseña. | `auth/src/main/java/com/bcp/workshop/auth/LegacyDatabase.java:32` | alta | CONFIRMADO — Issue #23; spec en `openspec/changes/address-h-auth-01/` |
+| H-AUTH-02 | auth | Token Base64 sin firma que incluye el secreto | Vulnerabilidad | El token es `Base64(username\|role\|expiración\|secreto)`; el secreto está en el código y viaja en cada token, por lo que se puede leer y fabricar tokens. `api/` acepta el mismo formato (H-API-01). | `auth/src/main/java/com/bcp/workshop/auth/LegacyTokenUtil.java:8-15` | alta | CONFIRMADO — spec en `openspec/changes/address-h-auth-02-token-integrity/` |
+| H-AUTH-03 | auth | Contraseñas almacenadas en texto plano | Vulnerabilidad | `legacy_users.password` guarda y compara el valor en claro; los usuarios sembrados usan contraseñas conocidas. | `auth/src/main/java/com/bcp/workshop/auth/LegacyDatabase.java:22-24,32` | media-alta | CONFIRMADO — spec en `openspec/changes/address-h-auth-03-password-storage/` |
+| H-AUTH-04 | auth | Respuestas con detalles internos y campo `debug` | Vulnerabilidad | El 500 devuelve mensaje y clase de la excepción; el 401 refleja el usuario recibido; el 200 incluye `debug`; un fallo de persistencia se traduce en 401. | `auth/src/main/java/com/bcp/workshop/auth/AuthResource.java:37,48,54-57; auth/src/main/java/com/bcp/workshop/auth/LegacyDatabase.java:38-42` | media | CONFIRMADO — spec en `openspec/changes/address-h-auth-04-error-disclosure/` |
+| H-AUTH-05 | auth | CORS abierto a cualquier origen y dependencias sin advisory verificado | Configuración / SCA | CORS acepta cualquier origen y `%prod` escucha en `0.0.0.0`; Quarkus `3.27.4`, Commons Text `1.9` y `sqlite-jdbc 3.50.3.0` están fijados sin advisory consultado (el secreto hardcodeado se cubre en H-AUTH-02). | `auth/src/main/resources/application.properties:3-7; auth/pom.xml (properties y dependencies)` | media | CONFIRMADO — spec en `openspec/changes/address-h-auth-05-cors-and-dependencies/` |
+
 ## Contrato observado (sin contrato acordado documentado)
 
 No existe `docs/ENDPOINTS.md` en el workspace. Lo siguiente se deriva de las

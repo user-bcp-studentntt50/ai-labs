@@ -1,0 +1,15 @@
+@import '../shell/payments-shared.css';
+
+.balance-card {
+  background: var(--payment-color-primary);
+  color: var(--payment-color-primary-contrast);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.balance-amount {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}

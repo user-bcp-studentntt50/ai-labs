@@ -1,0 +1,24 @@
+@import '../shell/payments-shared.css';
+
+.result-message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.result-message.success {
+  color: var(--payment-color-success);
+}
+
+.result-details {
+  margin: 0 0 2rem;
+}
+
+.result-details dt {
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+.result-details dd {
+  margin: 0;
+}

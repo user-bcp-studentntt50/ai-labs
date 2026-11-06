@@ -1,0 +1,16 @@
+<app-payment-shell [title]="title">
+  <p class="result-message" [class.success]="isSucceeded">{{ message }}</p>
+
+  <dl class="result-details">
+    <dt>{{ referenceLabel }}</dt>
+    <dd>{{ reference }}</dd>
+    <dt>{{ dateLabel }}</dt>
+    <dd>{{ dateDisplay }}</dd>
+    <dt>{{ destinationLabel }}</dt>
+    <dd>{{ destinationDisplay }}</dd>
+    <dt>{{ amountLabel }}</dt>
+    <dd>{{ amountDisplay }}</dd>
+  </dl>
+
+  <button type="button" class="primary" (click)="backToHome()">{{ backToHomeLabel }}</button>
+</app-payment-shell>
