@@ -1,16 +1,23 @@
 /* Tokens e utilidades compartidas por las pantallas del flujo de pagos (T11).
-   18px como tamaño base de texto y 48px como objetivo táctil mínimo. */
+   18px como tamaño base de texto y 48px como objetivo táctil mínimo.
+   Paleta y formas inspiradas en Flujo de Transferencia Ayni.png (referencia
+   visual; la HU manda el flujo y el alcance, ver PROPUESTA_FRONT.md). */
 
 .payment-shell {
   --payment-font-base: 1.125rem; /* 18px */
   --payment-tap-target: 3rem; /* 48px */
   --payment-color-text: #0b1b33;
+  --payment-color-muted: #44556b;
   --payment-color-primary: #0a4ea6; /* azul con contraste AA sobre blanco */
   --payment-color-primary-contrast: #ffffff;
+  --payment-color-primary-soft: #dce8fb; /* fondo de avatares/chips, azul claro */
   --payment-color-success: #1b7a3d; /* verde oscurecido para cumplir AA sobre blanco */
   --payment-color-danger: #a31515;
   --payment-color-surface: #ffffff;
   --payment-color-border: #c7d0dc;
+  --payment-radius-card: 1rem;
+  --payment-radius-pill: 999px;
+  --payment-shadow-card: 0 1px 2px rgba(11, 27, 51, 0.06), 0 1px 1px rgba(11, 27, 51, 0.04);
 
   font-size: var(--payment-font-base);
   color: var(--payment-color-text);
@@ -21,6 +28,7 @@
 
 .payment-shell h1 {
   font-size: 1.5rem;
+  font-weight: 700;
   margin: 0 0 1.25rem;
 }
 
@@ -28,7 +36,7 @@
   font-size: 1rem;
   min-height: var(--payment-tap-target);
   min-width: var(--payment-tap-target);
-  border-radius: 0.75rem;
+  border-radius: var(--payment-radius-card);
   border: 1px solid var(--payment-color-border);
   background: var(--payment-color-surface);
   cursor: pointer;
@@ -38,6 +46,8 @@
   background: var(--payment-color-primary);
   color: var(--payment-color-primary-contrast);
   border-color: transparent;
+  font-weight: 600;
+  box-shadow: var(--payment-shadow-card);
 }
 
 .payment-shell button:disabled {
@@ -62,8 +72,59 @@
   box-sizing: border-box;
 }
 
+/* Tarjeta blanca con borde suave y sombra ligera: contactos, resumen, datos de
+   origen/destino (patrón de la pantalla "Transferir dinero" de la referencia). */
+.payment-card {
+  background: var(--payment-color-surface);
+  border: 1px solid var(--payment-color-border);
+  border-radius: var(--payment-radius-card);
+  box-shadow: var(--payment-shadow-card);
+}
+
+/* Campo con icono decorativo a la izquierda (ver login.component.html para el
+   mismo patrón de icono + input ya usado en el proyecto). */
+.payment-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.payment-field-icon {
+  position: absolute;
+  left: 0.9rem;
+  color: var(--payment-color-muted);
+  pointer-events: none;
+}
+
+.payment-field input[type='text'],
+.payment-field input[type='search'] {
+  border-radius: var(--payment-radius-pill);
+  padding-left: 2.75rem;
+}
+
+/* Avatar circular con iniciales (ver "MS", "JD", "CL" en la referencia). */
+.payment-avatar {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--payment-color-primary-soft);
+  color: var(--payment-color-primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-chevron {
+  margin-left: auto;
+  color: var(--payment-color-muted);
+  flex-shrink: 0;
+}
+
 .payment-help {
   margin-top: 2rem;
   border-top: 1px solid var(--payment-color-border);
   padding-top: 1rem;
 }
+

@@ -1,6 +1,7 @@
 <app-payment-shell [title]="title">
-  <p class="summary">{{ summary }}</p>
+  <p class="payment-card summary">{{ summary }}</p>
 
   <button type="button" class="primary" [disabled]="submitting" (click)="confirm()">{{ confirmLabel }}</button>
-  <button type="button" [disabled]="submitting" (click)="correct()">{{ correctLabel }}</button>
+  <button type="button" class="secondary" [disabled]="submitting" (click)="correct()">{{ correctLabel }}</button>
 </app-payment-shell>
+

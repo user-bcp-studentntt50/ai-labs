@@ -2,7 +2,16 @@
 
 .summary {
   font-size: 1.25rem;
-  margin-bottom: 2rem;
+  font-weight: 600;
+  padding: 1.25rem;
+  margin: 0 0 2rem;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--payment-color-primary);
+  border-color: var(--payment-color-primary);
+  font-weight: 600;
 }
 
 button + button {

@@ -1,22 +1,48 @@
 <app-payment-shell [title]="title">
-  <dl class="amount-parties">
-    <dt>{{ originLabel }}</dt>
-    <dd>{{ originId }}</dd>
-    <dt>{{ destinationLabel }}</dt>
-    <dd>{{ destinationName }}</dd>
+  <dl class="payment-card party-card">
+    <div class="party-row">
+      <dt class="party-term">
+        <svg class="party-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M4 10 12 4l8 6M5 10v9h14v-9M9 19v-5h6v5"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        {{ originLabel }}
+      </dt>
+      <dd class="party-value">{{ originId }}</dd>
+    </div>
+    <div class="party-row">
+      <dt class="party-term">
+        <svg class="party-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8" />
+          <path d="M5 20c1.4-3.6 4.6-5.5 7-5.5s5.6 1.9 7 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        {{ destinationLabel }}
+      </dt>
+      <dd class="party-value">{{ destinationName }}</dd>
+    </div>
   </dl>
 
   <label for="amount-input">{{ inputLabel }}</label>
-  <input
-    id="amount-input"
-    type="text"
-    inputmode="decimal"
-    name="amount"
-    [(ngModel)]="amountText"
-    [attr.aria-invalid]="errorMessage ? true : null"
-    [attr.aria-describedby]="errorMessage ? 'amount-error' : null"
-  />
-  <p *ngIf="errorMessage" id="amount-error" role="alert">{{ errorMessage }}</p>
+  <div class="payment-card amount-field" [class.amount-field-invalid]="errorMessage">
+    <span class="amount-prefix" aria-hidden="true">S/</span>
+    <input
+      id="amount-input"
+      type="text"
+      inputmode="decimal"
+      name="amount"
+      [(ngModel)]="amountText"
+      [attr.aria-invalid]="errorMessage ? true : null"
+      [attr.aria-describedby]="errorMessage ? 'amount-error' : null"
+    />
+  </div>
+  <p *ngIf="errorMessage" id="amount-error" class="amount-error" role="alert">{{ errorMessage }}</p>
 
   <button type="button" class="primary" (click)="continueToConfirmation()">{{ continueLabel }}</button>
 </app-payment-shell>
+
+

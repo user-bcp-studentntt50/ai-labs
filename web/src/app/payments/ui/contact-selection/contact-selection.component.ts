@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { getMessage } from '../../config/messages.es';
 import { DemoContact, searchContacts } from '../../config/contacts.config';
 import { maskAlias } from '../../domain/alias-mask';
+import { getContactInitials } from '../../domain/contact-initials';
 import { PaymentFlowStore } from '../../application/payment-flow.store';
 import { PaymentShellComponent } from '../shell/payment-shell.component';
 
@@ -35,6 +36,10 @@ export class ContactSelectionComponent {
 
   maskedAlias(contact: DemoContact): string {
     return maskAlias(contact.alias);
+  }
+
+  initials(contact: DemoContact): string {
+    return getContactInitials(contact.displayName);
   }
 
   async selectContact(contact: DemoContact): Promise<void> {

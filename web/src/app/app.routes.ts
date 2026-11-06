@@ -14,5 +14,5 @@ export const routes: Routes = [
     loadChildren: () => import('./payments/payments.routes').then((module) => module.paymentsRoutes)
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'dashboard' }
 ];

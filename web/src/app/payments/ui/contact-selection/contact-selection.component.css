@@ -2,7 +2,7 @@
 
 .contact-list {
   list-style: none;
-  margin: 1rem 0 0;
+  margin: 1.25rem 0 0;
   padding: 0;
 }
 
@@ -10,14 +10,21 @@
   margin-top: 0.75rem;
 }
 
-.contact-list button {
+button.contact-row {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
+  align-items: center;
+  gap: 0.85rem;
   text-align: left;
   padding: 0.75rem 1rem;
+  min-height: 4rem;
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
 }
 
 .contact-name {
@@ -25,5 +32,5 @@
 }
 
 .contact-alias {
-  color: #44556b;
+  color: var(--payment-color-muted);
 }
